@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import masterung.androidthai.in.th.showbru.R;
 import masterung.androidthai.in.th.showbru.utility.GetAllData;
@@ -56,7 +60,8 @@ public class MainFragment extends Fragment{
 
                     MyConstant myConstant = new MyConstant();
                     boolean b = true;
-                    String truePass, nameUser;
+                    String truePass = null, nameUser = null;
+                    MyAlert myAlert = new MyAlert(getActivity());
 
                     try {
 
@@ -65,6 +70,30 @@ public class MainFragment extends Fragment{
 
                         String jsonString = getAllData.get();
                         Log.d("26AprilV1", "JSON ==> " + jsonString);
+
+                        JSONArray jsonArray = new JSONArray(jsonString);
+
+                        for (int i=0; i<jsonArray.length(); i+=1) {
+
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                            if (userString.equals(jsonObject.getString("User"))) {
+                                b = false;
+                                truePass = jsonObject.getString("Password");
+                                nameUser = jsonObject.getString("Name");
+                            }
+                        }
+
+                        if (b) {
+                            myAlert.normalDialog("User False",
+                                    "No User in my Database");
+                        } else if (passwordString.equals(truePass)) {
+                            Toast.makeText(getActivity(), "Welcome " + nameUser,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            myAlert.normalDialog("Password False",
+                                    "Please Try Agains Password False");
+                        }
 
 
                     } catch (Exception e) {
