@@ -11,11 +11,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import masterung.androidthai.in.th.showbru.MainActivity;
 import masterung.androidthai.in.th.showbru.R;
+import masterung.androidthai.in.th.showbru.utility.MyAlert;
 
-public class RegisterFragment extends Fragment{
+public class RegisterFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -42,6 +44,29 @@ public class RegisterFragment extends Fragment{
 
     private void uploadValueToServer() {
 
+//        get value from EditText
+        EditText nameEditText = getView().findViewById(R.id.edtName);
+        EditText userEditText = getView().findViewById(R.id.edtUser);
+        EditText passwordEditText = getView().findViewById(R.id.edtPassword);
+
+//        Change Data Type From EditText to String
+        String nameString = nameEditText.getText().toString().trim();
+        String userString = userEditText.getText().toString().trim();
+        String passwordString = passwordEditText.getText().toString().trim();
+
+//        Check Space
+        if (nameString.isEmpty() || userString.isEmpty() || passwordString.isEmpty()) {
+//            Have Space
+
+            MyAlert myAlert = new MyAlert(getActivity());
+            myAlert.normalDialog("Have Space", "Please Fill All Blank");
+
+        } else {
+//            No Space
+
+        }
+
+
     }
 
     @Override
@@ -55,7 +80,7 @@ public class RegisterFragment extends Fragment{
     private void createToolbar() {
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbarRegister);
-        ((MainActivity)getActivity()).setSupportActionBar(toolbar);
+        ((MainActivity) getActivity()).setSupportActionBar(toolbar);
 
 //        Setup Title
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Register");
